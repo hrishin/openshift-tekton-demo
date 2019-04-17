@@ -30,7 +30,10 @@ Access OpenShift integrated registry using [tekton pipeline](https://github.com/
   ```shell
   oc policy add-role-to-user registry-editor -z <SA>
   ```
-  Note: Requires `admin` privileges to execute above commands. 
+  Notes: 
+  - Requires `admin` privileges to execute above commands. 
+  - The `tls` verification should be ignored while interacting with `image-registry` service which has self signed certificates.
+  - In OpenShift 3.x, every `namespace` has `builder` SA and registry service name is `docker-registry` which runs under `default` namespace/project.  
 
 
 ## Examples:
