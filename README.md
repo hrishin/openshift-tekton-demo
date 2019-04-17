@@ -2,7 +2,7 @@
 Access OpenShift integrated registry using [tekton pipeline](https://github.com/tektoncd/pipeline) on OpenShift 4 cluster.
 
 
-##Prerequisites:
+## Prerequisites:
 
 * ##### V2 Schema
   Make sure integrated registry has enabled V2 API schema.
@@ -33,16 +33,16 @@ Access OpenShift integrated registry using [tekton pipeline](https://github.com/
   Note: Requires `admin` privileges to execute above commands. 
 
 
-##Examples:
+## Examples:
 
-#####1. Build sample application and push image to OpenShift registry
+##### 1. Build sample application and push image to OpenShift registry
 This [example](os-build-push-task.yaml) use `kaniko` to build an container image then push it the OpenShift registry using `builder` `ServiceAccount`
 ```
 oc create project demo
 oc apply -f os-build-push-task.yaml
 ```
 
-#####2. Copy a image and push it to OpenShift registry 
+##### 2. Copy a image and push it to OpenShift registry 
 This [example](os-copy-puos-copy-push-task.yamlsh-task.yaml) uses `scopeo` to copy an image from `openshift` namespace then push it to the OpenShift registry using `tkn-pipeline` `ServiceAccount`
 ```
 oc create project demo

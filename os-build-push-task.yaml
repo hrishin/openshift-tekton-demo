@@ -1,0 +1,57 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: push-image
+  namespace: demo
+spec:
+  inputs:
+    resources:
+      - name: source
+        type: git
+    params:
+      - name: pathToDockerFileApp
+        default: Dockerfile
+      - name: pathToContext
+        default: /workspace/source/examples/microservices/leeroy-app
+  outputs:
+    resources:
+      - name: app-image
+        type: image
+  steps:
+    - name: build-and-push-app
+      image: gcr.io/kaniko-project/executor
+      command:
+        - /kaniko/executor
+      args:
+        - --dockerfile=${inputs.params.pathToDockerFileApp}
+        - --destination=${outputs.resources.app-image.url}
+        - --context=${inputs.params.pathToContext}
+        - --skip-tls-verify=true
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: push-image-run
+  namespace: demo
+spec:
+  serviceAccount: builder
+  inputs:
+    resources:
+    - name: source
+      resourceSpec:
+        type: git
+        params:
+          - name: url
+            value: https://github.com/GoogleContainerTools/skaffold.git
+  outputs:
+    resources:
+    - name: app-image
+      resourceSpec:
+        type: image
+        params:
+          - name: url
+            value: image-registry.openshift-image-registry.svc:5000/demo/app
+  taskRef:
+    name: push-image
+  trigger:
+    type: manual
