@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: copy-image-run
+  namespace: demo
+spec:
+  serviceAccount: tkn-pipeline
+  taskSpec:
+    steps:
+    - name: copy-and-push
+      image: quay.io/rhpipeline/skopeo:alpine
+      command: 
+        - skopeo
+      args: 
+        - copy
+        - docker://image-registry.openshift-image-registry.svc:5000/openshift/nodejs
+        - docker://image-registry.openshift-image-registry.svc:5000/demo/nodish
+        - --src-tls-verify=false
+        - --dest-tls-verify=false
+  trigger:
+    type: manual
