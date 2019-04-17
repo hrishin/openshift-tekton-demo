@@ -51,6 +51,10 @@ oc policy add-role-to-user registry-editor -z tkn-pipeline
 oc apply -f os-copy-push-task.yaml
 ```
 
+To verify the image, execute 
+```
+oc get is
+``` 
   
   
 
