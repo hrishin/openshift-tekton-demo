@@ -9,8 +9,8 @@ Access OpenShift integrated registry using [tekton pipeline](https://github.com/
   On OpenShift4 it could enabled by
   ```
   oc set env \
-  REGISTRY_MIDDLEWARE_REPOSITORY_OPENSHIFT_ACCEPTSCHEMA2=true \
   deployment/image-registry \
+  REGISTRY_MIDDLEWARE_REPOSITORY_OPENSHIFT_ACCEPTSCHEMA2=true \
   -n openshift-image-registry 
   ```   
   
