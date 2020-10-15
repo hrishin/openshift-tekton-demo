@@ -22,10 +22,12 @@ spec:
       image: gcr.io/kaniko-project/executor
       command:
         - /kaniko/executor
+      securityContext:
+        runAsUser: 0	#root user
       args:
-        - --dockerfile=${inputs.params.pathToDockerFileApp}
-        - --destination=${outputs.resources.app-image.url}
-        - --context=${inputs.params.pathToContext}
+        - --dockerfile=$(inputs.params.pathToDockerFileApp)
+        - --destination=$(outputs.resources.app-image.url)
+        - --context=$(inputs.params.pathToContext)
         - --skip-tls-verify=true
 ---
 apiVersion: tekton.dev/v1alpha1
@@ -34,7 +36,7 @@ metadata:
   name: push-image-run
   namespace: demo
 spec:
-  serviceAccount: builder
+  serviceAccountName: builder
   inputs:
     resources:
     - name: source
@@ -53,5 +55,3 @@ spec:
             value: image-registry.openshift-image-registry.svc:5000/demo/app
   taskRef:
     name: push-image
-  trigger:
-    type: manual
